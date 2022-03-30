@@ -8,8 +8,7 @@ public class EventConfiguration {
 
     @Bean
     public Message message(){
-        return new Message(null);
+        return new Message("");
     }
-
 
 }
