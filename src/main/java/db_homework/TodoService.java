@@ -1,7 +1,5 @@
 package db_homework;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -29,30 +27,14 @@ public class TodoService {
         return todoDto;
     }
 
-    public ToDo convertFromDto(TodoDto todo) {
+    private ToDo convertFromDto(TodoDto todo) {
         var todoDto = modelMapper.map(todo, ToDo.class);
         todoDto.setEvents(todo.getEventsDto().stream().map(Event::new).toList());
         return todoDto;
     }
 
-    public ToDo createFromJson(JSONObject data) {
-        if (data.keySet().size() > 2)
-            throw new IllegalArgumentException();
-        if (!data.containsKey("name") || !data.containsKey("events"))
-            throw new IllegalArgumentException();
-
-        var name = (String) data.get("name");
-        var events = (JSONArray) data.get("events");
-
-        if (events.size() == 0)
-            throw new IllegalArgumentException();
-
-        return new ToDo(name, events.stream().map(obj -> new Event((String) obj)).toList());
+    public void saveTodo(TodoDto toDo) {
+        var todo = convertFromDto(toDo);
+        repository.save(todo);
     }
-
-    public void saveTodo(ToDo toDo) {
-        repository.save(toDo);
-    }
-
-
 }

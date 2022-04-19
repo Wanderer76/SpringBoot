@@ -25,8 +25,7 @@ public class ToDoController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> addTodo(@RequestBody @Valid TodoDto body) {
-        ToDo todo = todoService.convertFromDto(body);
-        todoService.saveTodo(todo);
+        todoService.saveTodo(body);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
